@@ -1,0 +1,21 @@
+TARGET = MyKursach
+CC = gcc
+
+$(TARGET): kurs8.o kurs8func.o
+	$(CC) kurs8.o kurs8func.o -o $(TARGET)
+
+kurs8.o: kurs8.c
+	$(CC) -c kurs8.c
+
+kurs8func.o: kurs8func.c
+	$(CC) -c -fPIC kurs8func.c
+
+KursachLib: kurs8func.o
+	$(CC) -shared -o libKursachLib.so kurs8func.o
+
+link: kurs8.o KursachLib
+	$(CC) -o kursach kurs8.o -L. -lKursachLib -Wl,-rpath,. 
+
+text: text.c kurs8func.c
+	$(CC) text.c kurs8func.c -o text
+
